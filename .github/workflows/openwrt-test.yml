@@ -33,7 +33,9 @@ jobs:
         cd openwrt
         make defconfig
     - name: SSH 连接，设置menuconfig
-      if: env.SSH_ACTIONS == 'true'
+      run: |
+        cd openwrt
+        if: env.SSH_ACTIONS == 'true'
       
     - name: Download package
       run: |
