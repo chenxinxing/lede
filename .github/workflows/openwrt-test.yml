@@ -1,8 +1,22 @@
 name: Build OpenWrt
 on: push
+  #schedule:
+  #- cron: 0 0 * * 5
+  
+env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  CONFIG_FILE: .config
+  SSH_ACTIONS: false
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  UPLOAD_COWTRANSFER: false
+  TZ: Asia/Shanghai
+
 jobs:
   build:
     runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
     steps:
     - name: Installation depends
       run: |
@@ -18,6 +32,9 @@ jobs:
       run: |
         cd openwrt
         make defconfig
+    - name: SSH 连接，设置menuconfig
+      if: env.SSH_ACTIONS == 'true'
+      
     - name: Download package
       run: |
         cd openwrt && make download -j8
