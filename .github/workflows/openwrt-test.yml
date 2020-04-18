@@ -36,9 +36,10 @@ jobs:
       run: |
         cd openwrt
         make defconfig
+        
     - name: SSH 连接，设置menuconfig
-      #uses: actions/upload-artifact@master
-      uses: mxschmitt/action-tmate@v1
+      #uses: mxschmitt/action-tmate@v1 #在退出连接后不能进行到下一个步骤，所以在实际使用中没有多少价值，只能用于 SSH 连接。
+      uses: csexton/debugger-action@master #同样是通过 tmate 连接，退出连接后可持续进行下一个步骤，能更好的应用到实际项目中使用。
       
     - name: 上传.config
       uses: actions/upload-artifact@master
