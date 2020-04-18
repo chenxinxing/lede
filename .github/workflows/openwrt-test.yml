@@ -31,8 +31,8 @@ jobs:
         cd openwrt
         echo "src-git lienol https://github.com/Lienol/openwrt-package" >> feeds.conf.default
         sed -i 's/wndr4300_mtdlayout=mtdparts=ar934x-nfc:256k(u-boot)ro,256k(u-boot-env)ro,256k(caldata)ro,512k(pot),2048k(language),512k(config),3072k(traffic_meter),2048k(kernel),23552k(ubi),25600k@0x6c0000(firmware),256k(caldata_backup),-(reserved)/wndr4300_mtdlayout=mtdparts=ar934x-nfc:256k(u-boot)ro,256k(u-boot-env)ro,256k(caldata),512k(pot),2048k(language),512k(config),3072k(traffic_meter),2048k(kernel),121856k(ubi),123904k@0x6c0000(firmware),256k(caldata_backup),-(reserved)/' ./target/linux/ar71xx/image/legacy.mk
-        sed -i 's/root::0:0:99999:7:::/root:\$\1\$wEehtjxj\$YBu4quNfVUjzfv8p\/PBo5.:0:0:99999:7:::/' ./package/base-files/files/etc/shadow
-        sed -i 's/\.disabled=0/\.disabled=1/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
+        sed -i "s/root::0:0:99999:7:::/root:\$\1\$wEehtjxj\$YBu4quNfVUjzfv8p\/PBo5.:0:0:99999:7:::/" ./package/base-files/files/etc/shadow
+        sed -i 's/\.disabled=1/\.disabled=0/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
         sed -i 's/\.ssid=OpenWrt/\.ssid=stoneson/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
         echo "net.netfilter.nf_conntrack_max=65535" >> ./package/base-files/files/etc/sysctl.conf
         ./scripts/feeds clean
