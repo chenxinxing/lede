@@ -1,10 +1,10 @@
 name: Build OpenWrt
 on: 
   push:
-  schedule:
-  - cron: 0 0 * * 5
-  watch:
-    types: started
+  #schedule:
+  #- cron: 0 0 * * 5
+  #watch:
+  #  types: started
   
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -29,6 +29,7 @@ jobs:
       run: |
         git clone https://github.com/openwrt/openwrt
         cd openwrt
+        ./scripts/feeds clean
         ./scripts/feeds update -a
         ./scripts/feeds install -a
     - name: Generate config file
