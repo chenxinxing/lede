@@ -1,20 +1,20 @@
-name: Build OpenWrt
+name: 编译OpenWrt WNDR4300V1固件 
 on: 
-  push:
+  #push:
   #schedule:
   #- cron: 0 0 * * 5
-  #watch:
-  #  types: started
+  watch:
+    types: started
   
-env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
-  REPO_BRANCH: master
-  CONFIG_FILE: .config
-  SSH_ACTIONS: false
-  UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
-  TZ: Asia/Shanghai
+#env:
+#  REPO_URL: https://github.com/coolsnowwolf/lede
+#  REPO_BRANCH: master
+#  CONFIG_FILE: .config
+#  SSH_ACTIONS: false
+#  UPLOAD_BIN_DIR: false
+#  UPLOAD_FIRMWARE: true
+#  UPLOAD_COWTRANSFER: false
+#  TZ: Asia/Shanghai
 
 jobs:
   build:
@@ -32,6 +32,8 @@ jobs:
         echo "src-git lienol https://github.com/Lienol/openwrt-package" >> feeds.conf.default
         sed -i 's/wndr4300_mtdlayout=mtdparts=ar934x-nfc:256k(u-boot)ro,256k(u-boot-env)ro,256k(caldata)ro,512k(pot),2048k(language),512k(config),3072k(traffic_meter),2048k(kernel),23552k(ubi),25600k@0x6c0000(firmware),256k(caldata_backup),-(reserved)/wndr4300_mtdlayout=mtdparts=ar934x-nfc:256k(u-boot)ro,256k(u-boot-env)ro,256k(caldata),512k(pot),2048k(language),512k(config),3072k(traffic_meter),2048k(kernel),121856k(ubi),123904k@0x6c0000(firmware),256k(caldata_backup),-(reserved)/' ./target/linux/ar71xx/image/legacy.mk
         sed -i "s/root::0:0:99999:7:::/root:$1$wEehtjxj$YBu4quNfVUjzfv8p\/PBo5.:0:0:99999:7:::/" ./package/base-files/files/etc/shadow
+        sed -i 's/\.disabled=0/\.disabled=1/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
+        sed -i 's/\.ssid=OpenWrt/\.ssid=stoneson/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
         echo "net.netfilter.nf_conntrack_max=65535" >> ./package/base-files/files/etc/sysctl.conf
         ./scripts/feeds clean
         ./scripts/feeds update -a
