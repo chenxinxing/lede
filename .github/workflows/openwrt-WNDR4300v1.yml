@@ -18,10 +18,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04 #ubuntu-latest #
+    runs-on: ubuntu-latest #ubuntu-18.04 #
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
-    - name: 系统环境更新 / Installation depends
+    - name: 系统环境更新、清理空间 | Installation depends
       run: |
         sudo swapoff /swapfile
         sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
@@ -33,7 +33,7 @@ jobs:
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "Asia/Shanghai"
         
-    - name: 下载openwrt源代码 | Clone source code
+    - name: 下载openwrt源代码、lean源代码 | Clone source code
       run: |
         git clone https://github.com/openwrt/openwrt
         #cd openwrt
@@ -45,7 +45,7 @@ jobs:
         echo package/lean >> .git/info/sparse-checkout
         git pull origin master
     
-    - name: Generate config file
+    - name: 修改配置信息 ｜Generate config file
       run: |
         cd openwrt
         echo "src-git lienol https://github.com/Lienol/openwrt-package" >> feeds.conf.default
@@ -63,15 +63,15 @@ jobs:
         make prereq
         curl -fsSL https://github.com/chenxinxing/lede/raw/master/.github/config-4300 > .config
         
-    - name: SSH 连接，设置menuconfig
+   # - name: SSH 连接，设置menuconfig
       #uses: mxschmitt/action-tmate@v1 #在退出连接后不能进行到下一个步骤，所以在实际使用中没有多少价值，只能用于 SSH 连接。
-      uses: csexton/debugger-action@master #同样是通过 tmate 连接，退出连接后可持续进行下一个步骤，能更好的应用到实际项目中使用。
+  #    uses: csexton/debugger-action@master #同样是通过 tmate 连接，退出连接后可持续进行下一个步骤，能更好的应用到实际项目中使用。
       
-    - name: 上传.config
-      uses: actions/upload-artifact@master
-      with:
-        name: .config
-        path: openwrt/.config
+  #  - name: 上传.config
+  #    uses: actions/upload-artifact@master
+  #    with:
+  #      name: .config
+  #      path: openwrt/.config
     
     - name: Download package
       run: |
@@ -91,7 +91,7 @@ jobs:
        # ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
        # echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
         
-    - name : Upload artifact
+    - name : 上传编译包｜Upload artifact
       uses: actions/upload-artifact@master
       with:
         name: OpenWrt
