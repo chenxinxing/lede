@@ -6,4 +6,4 @@ jobs:
     runs-on: ubuntu-latest #ubuntu-18.04 #
     steps:
       - name: SSH 连接，设置menuconfig
-        uses: csexton/debugger-action@master
+        uses: mxschmitt/action-tmate@v1
