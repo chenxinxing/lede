@@ -62,10 +62,10 @@ jobs:
         ./scripts/feeds clean
         ./scripts/feeds update -a
         ./scripts/feeds install -a
-        
+        rm -rf ./tmp && rm -rf .config
         make defconfig
         make prereq
-        curl -fsSL https://github.com/chenxinxing/lede/raw/master/.github/config-4300 > .config.4300
+        curl -fsSL https://github.com/chenxinxing/lede/raw/master/.github/config-4300 > .config
         
     - name: SSH 连接，设置menuconfig
       #uses: mxschmitt/action-tmate@v1 #在退出连接后不能进行到下一个步骤，所以在实际使用中没有多少价值，只能用于 SSH 连接。
@@ -91,6 +91,7 @@ jobs:
     - name: Upload build.log to WeTransfer
       #if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
+        cd openwrt
         curl -fsSL git.io/file-transfer | sh
         ./transfer wet -s -p 16 --no-progress build.log 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
@@ -98,5 +99,5 @@ jobs:
     - name : 上传编译包｜Upload artifact
       uses: actions/upload-artifact@master
       with:
-        name: OpenWrt
+        name: WNDR4300V1
         path: openwrt/bin
