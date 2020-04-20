@@ -11,5 +11,16 @@ jobs:
           sudo timedatectl set-timezone "Asia/Shanghai"
           alias ll="ls -ahl"
         
+    - name: dingtalk robot message
+      uses: fifsky/dingtalk-action@master
+      with:
+        url: https://oapi.dingtalk.com/robot/send?access_token=fda7d81de2b76f11a1e27c1796933e34958e1aa5deaf8b367b4a0db2e952be9c
+        type: markdown
+        content: |
+                # Tips
+                ## Hello
+                > from github action message
+                > ^_^
+    
     - name: SSH 连接
       uses: mxschmitt/action-tmate@v1
