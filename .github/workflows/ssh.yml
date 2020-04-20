@@ -10,7 +10,11 @@ jobs:
           sudo apt-get update
           sudo timedatectl set-timezone "Asia/Shanghai"
           alias ll="ls -ahl"
-        
+    
+    - name: SSH 连接
+      uses: mxschmitt/action-tmate@v1
+  
+      
     - name: dingtalk robot message
       uses: fifsky/dingtalk-action@master
       with:
@@ -22,5 +26,3 @@ jobs:
                 > from github action message
                 > ^_^
     
-    - name: SSH 连接
-      uses: mxschmitt/action-tmate@v1
