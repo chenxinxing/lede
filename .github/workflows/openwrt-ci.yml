@@ -10,7 +10,7 @@
 name: OpenWrt-CI
 
 on:
-  push:
+  #push:
   schedule:
     - cron: 0 20 * * *
 
