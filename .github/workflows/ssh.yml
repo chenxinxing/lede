@@ -3,12 +3,13 @@ on: push
     
 jobs:
   build:
-    runs-on: ubuntu-latest #ubuntu-18.04 #
+    runs-on: ubuntu-16.04 #ubuntu-latest #ubuntu-18.04 #
     steps:
     - name: 系统环境更新、清理空间 | Installation depends
       run: |
-        sudo timedatectl set-timezone "Asia/Shanghai"
-        alias ll="ls -ahl"
+          sudo apt-get update
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          alias ll="ls -ahl"
         
-    - name: SSH 连接，设置menuconfig
+    - name: SSH 连接
       uses: mxschmitt/action-tmate@v1
