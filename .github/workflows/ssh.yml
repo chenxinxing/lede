@@ -12,7 +12,7 @@ jobs:
           alias ll="ls -ahl"
     
     - name: SSH 连接
-      uses: mxschmitt/action-tmate@v1
+      uses: csexton/debugger-action@master
   
       
     - name: dingtalk robot message
