@@ -38,7 +38,8 @@ jobs:
         alias ll='ls -alh'
 
     - name: Run ssh script
-      uses: csexton/debugger-action@master #同样是通过 tmate 连接，退出连接后可持续进行下一个步骤，能更好的应用到实际项目中使用。
+      uses: mxschmitt/action-tmate@v1
+      #uses: csexton/debugger-action@master #同样是通过 tmate 连接，退出连接后可持续进行下一个步骤，能更好的应用到实际项目中使用。
 
 
     # Runs a set of commands using the runners shell
