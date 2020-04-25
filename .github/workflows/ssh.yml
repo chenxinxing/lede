@@ -21,9 +21,21 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     #- uses: actions/checkout@v2
-    - name: sudo timedatectl set-timezone "Asia/Shanghai"
+    - name: 系统环境更新、清理空间 | Installation depends
       run: |
-       sudo timedatectl set-timezone "Asia/Shanghai"
+       sudo swapoff /swapfile
+        docker rmi `docker images -q`
+        sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
+        sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo apt-get update
+        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs  git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler antlr3 gperf
+        sudo timedatectl set-timezone "Asia/Shanghai"
+        alias rm='rm -i'
+        alias cp='cp -i'
+        alias mv='mv -i'
+        alias ll='ls -alh'
 
     - name: Run ssh script
       uses: csexton/debugger-action@master #同样是通过 tmate 连接，退出连接后可持续进行下一个步骤，能更好的应用到实际项目中使用。
