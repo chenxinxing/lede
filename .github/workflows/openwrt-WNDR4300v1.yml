@@ -45,6 +45,7 @@ jobs:
         rm -rf lede/
         rm -rf ./openwrt/package/lean/luci-app-qbittorrent/
         rm -rf ./openwrt/package/lean/luci-app-ssrserver-python/
+        rm -rf ./openwrt/package/feeds/packages/seafile-server/
 
     - name: 修改配置信息 ｜Generate config file
       run: |
@@ -84,14 +85,16 @@ jobs:
     - name: 开始编译 | Build
       run: |
         cd openwrt
-        make -j$(($(nproc) + 1)) V=s 2>&1 | tee build.log 
+        make -j$(($(nproc) + 1)) V=s 2>&1 
+     # | tee build.log 
     
     - name: Upload build.log to WeTransfer
       #if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         cd openwrt
+        tar cvfz wndr4300.tgz bin/*
         curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress build.log 2>&1 | tee wetransfer.log
+        ./transfer wet -s -p 16 --no-progress wndr4300.tgz 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
         
     - name : 上传编译包｜Upload artifact
