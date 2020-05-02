@@ -45,7 +45,7 @@ jobs:
         rm -rf lede/
         rm -rf ./openwrt/package/lean/luci-app-qbittorrent/
         rm -rf ./openwrt/package/lean/luci-app-ssrserver-python/
-        rm -rf ./openwrt/package/feeds/packages/seafile-server/
+        
 
     - name: 修改配置信息 ｜Generate config file
       run: |
@@ -68,6 +68,7 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         rm -rf ./tmp && rm -rf .config
+        rm -rf ./package/feeds/packages/seafile-server/
         curl -fsSL https://github.com/chenxinxing/lede/raw/master/.github/config-4300 > .config
         make defconfig
         make prereq
@@ -78,7 +79,8 @@ jobs:
     
     - name: Download package
       run: |
-        cd openwrt && make download -j8
+        cd openwrt
+        make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
     
@@ -89,7 +91,6 @@ jobs:
      # | tee build.log 
     
     - name: Upload build.log to WeTransfer
-      #if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         cd openwrt
         tar cvfz wndr4300.tgz bin/*
